@@ -43,6 +43,8 @@ func take_damage() -> void:
 	$AnimatedSprite2D.play("fly");
 
 func shoot() -> void:
+	if dying:
+		return ;
 	$AnimatedSprite2D.play("shoot");
 	var projectile_instance = projectile.instantiate();
 	projectile_instance.global_position = global_position;
