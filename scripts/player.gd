@@ -6,6 +6,7 @@ const JUMP_VELOCITY = -250.0
 const RUN_SPEED = 200.0
 
 var shoot_ongoing = false
+var ongoing_shoot_direction;
 
 
 func _physics_process(delta: float) -> void:
@@ -47,33 +48,48 @@ func play_walk_animation(direction: float, run: bool) -> void:
 		animationSprite.play(animation_right);
 	elif direction < -0.5:
 		animationSprite.play(animation_left);
+	elif animationSprite.animation.ends_with("left"):
+		animationSprite.play("idle_left");
 	else:
 		animationSprite.play("idle");
 
 func _input(event: InputEvent) -> void:
 	if event.is_action("attack"):
-		if shoot_ongoing:
-			return
-		shoot_ongoing = true
 		var input_axis = Input.get_axis("left", "right");
 		var direction = input_axis if input_axis != 0 else (-1.0 if $AnimatedSprite2D.animation.ends_with("left") else 1.0);
+
+		if shoot_ongoing:
+			if ongoing_shoot_direction == direction:
+				return ;
+		
+		shoot_ongoing = true
 		if direction > 0:
-			$AnimatedSprite2D.play("attack_right")
+			$AnimatedSprite2D.play("attack_right");
 		elif direction < 0:
-			$AnimatedSprite2D.play("attack_left")
-		var space_state = get_world_2d().direct_space_state
-		var query = PhysicsRayQueryParameters2D.new()
-		query.from = global_position
-		query.to = global_position + Vector2(direction * 50, 0)
-		query.collision_mask = 2
-		var result = space_state.intersect_ray(query)
-		if result:
-			print("Hit: ", result.collider)
-			if result.collider.has_method("take_damage"):
-				result.collider.take_damage()
+			$AnimatedSprite2D.play("attack_left");
+		
+		var space_state = get_world_2d().direct_space_state;
+		var attack_range = 50.0;
+		var angle_step = deg_to_rad(5);
+		for angle_offset in range(-9, 10):
+			var query = PhysicsRayQueryParameters2D.new()
+			query.from = global_position
+			var current_angle = angle_offset * angle_step
+			var shoot_direction = Vector2(direction * attack_range, 0).rotated(current_angle)
+			query.to = global_position + shoot_direction
+			query.collision_mask = 2
+			var result = space_state.intersect_ray(query)
+			if result:
+				print("Hit: ", result.collider)
+				if result.collider.has_method("take_damage"):
+					result.collider.take_damage()
+					break
 
 
 func _on_animation_finished() -> void:
-	if $AnimatedSprite2D.animation == "attack_right" or $AnimatedSprite2D.animation == "attack_left":
+	if $AnimatedSprite2D.animation == "attack_right":
 		$AnimatedSprite2D.play("idle");
-		shoot_ongoing = false
+	elif $AnimatedSprite2D.animation == "attack_left":
+		$AnimatedSprite2D.play("idle_left");
+
+	shoot_ongoing = false
