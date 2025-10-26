@@ -1,0 +1,40 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://d2srpxvjgibt2"]
+
+[ext_resource type="FontFile" uid="uid://dainsu16xpi" path="res://fonts/m5x7.ttf" id="1_br443"]
+[ext_resource type="Texture2D" uid="uid://br4wjwqvegb2e" path="res://assets/ui/UI.png" id="2_ptbdg"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_br443"]
+load_path = "res://.godot/imported/UI.png-dd7af4aacc0de4b5051ba7dfc2272adc.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ptbdg"]
+texture = SubResource("CompressedTexture2D_br443")
+texture_margin_left = 17.0
+texture_margin_top = 5.0
+texture_margin_right = 17.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(53, 1557, 55, 21)
+modulate_color = Color(0.5931336, 0.59313357, 0.59313357, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ln24"]
+texture = ExtResource("2_ptbdg")
+texture_margin_left = 17.0
+texture_margin_top = 5.0
+texture_margin_right = 17.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(53, 1557, 55, 21)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rtw2f"]
+texture = ExtResource("2_ptbdg")
+texture_margin_left = 17.0
+texture_margin_top = 5.0
+texture_margin_right = 17.0
+texture_margin_bottom = 7.0
+region_rect = Rect2(132, 1558, 57, 19)
+
+[resource]
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 32
+Button/fonts/font = ExtResource("1_br443")
+Button/styles/hover = SubResource("StyleBoxTexture_ptbdg")
+Button/styles/normal = SubResource("StyleBoxTexture_8ln24")
+Button/styles/pressed = SubResource("StyleBoxTexture_rtw2f")

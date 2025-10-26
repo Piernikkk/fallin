@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal health_changed(new_health: int)
+
 
 const SPEED = 100.0
 const JUMP_VELOCITY = -250.0
@@ -97,6 +99,7 @@ func _on_animation_finished() -> void:
 
 func take_damage(amount: int) -> void:
 	health -= amount;
+	health_changed.emit(health);
 	if health <= 0:
 		print("Player has died.");
 		queue_free();
