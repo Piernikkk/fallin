@@ -2,11 +2,15 @@ extends CharacterBody2D
 
 @onready var player = %Player;
 @onready var projectile = preload("res://sprites/eye_projectile.tscn");
+@onready var shoot_timer = $Timer;
 
 const MOVE_SPEED = 50.0;
 const MAX_HEALTH = 50;
 
 var health = MAX_HEALTH;
+
+func _ready() -> void:
+	shoot_timer.start();
 
 func _physics_process(delta: float) -> void:
 	if dying and not is_on_floor():
@@ -29,6 +33,7 @@ var dying = false
 
 func take_damage() -> void:
 	if dying:
+		shoot_timer.set_paused(true);
 		return ;
 	$AnimatedSprite2D.play("hit");
 	health -= 10;
@@ -41,6 +46,7 @@ func take_damage() -> void:
 		return ;
 	await $AnimatedSprite2D.animation_finished;
 	$AnimatedSprite2D.play("fly");
+	shoot_timer.set_paused(false);
 
 func shoot() -> void:
 	if dying:
