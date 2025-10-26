@@ -13,6 +13,8 @@ var health = MAX_HEALTH;
 
 var shoot_ongoing = false
 
+func _ready():
+	health_changed.emit(health);
 
 func _physics_process(delta: float) -> void:
 	# gravity
