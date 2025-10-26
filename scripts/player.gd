@@ -5,6 +5,8 @@ const SPEED = 100.0
 const JUMP_VELOCITY = -250.0
 const RUN_SPEED = 200.0
 
+var shoot_ongoing = false
+
 
 func _physics_process(delta: float) -> void:
 	# gravity
@@ -29,6 +31,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide();
 
 func play_walk_animation(direction: float, run: bool) -> void:
+	if shoot_ongoing:
+		return
 	var animationSprite = $AnimatedSprite2D;
 
 	const walk_right_anim = "walk_right";
@@ -47,10 +51,29 @@ func play_walk_animation(direction: float, run: bool) -> void:
 		animationSprite.play("idle");
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("attack"):
-		$AnimatedSprite2D.play("attack");
+	if event.is_action("attack"):
+		if shoot_ongoing:
+			return
+		shoot_ongoing = true
+		var input_axis = Input.get_axis("left", "right");
+		var direction = input_axis if input_axis != 0 else (-1.0 if $AnimatedSprite2D.animation.ends_with("left") else 1.0);
+		if direction > 0:
+			$AnimatedSprite2D.play("attack_right")
+		elif direction < 0:
+			$AnimatedSprite2D.play("attack_left")
+		var space_state = get_world_2d().direct_space_state
+		var query = PhysicsRayQueryParameters2D.new()
+		query.from = global_position
+		query.to = global_position + Vector2(direction * 50, 0)
+		query.collision_mask = 2
+		var result = space_state.intersect_ray(query)
+		if result:
+			print("Hit: ", result.collider)
+			if result.collider.has_method("take_damage"):
+				result.collider.take_damage()
 
 
 func _on_animation_finished() -> void:
-	if $AnimatedSprite2D.animation == "attack":
+	if $AnimatedSprite2D.animation == "attack_right" or $AnimatedSprite2D.animation == "attack_left":
 		$AnimatedSprite2D.play("idle");
+		shoot_ongoing = false
