@@ -5,9 +5,6 @@ const SPEED = 100.0
 const JUMP_VELOCITY = -250.0
 const RUN_SPEED = 200.0
 
-func _ready() -> void:
-	$AnimatedSprite2D.play("idle");
-
 
 func _physics_process(delta: float) -> void:
 	# gravity
@@ -48,3 +45,12 @@ func play_walk_animation(direction: float, run: bool) -> void:
 		animationSprite.play(animation_left);
 	else:
 		animationSprite.play("idle");
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("attack"):
+		$AnimatedSprite2D.play("attack");
+
+
+func _on_animation_finished() -> void:
+	if $AnimatedSprite2D.animation == "attack":
+		$AnimatedSprite2D.play("idle");
