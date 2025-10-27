@@ -48,8 +48,8 @@ func take_damage() -> void:
 	$AnimatedSprite2D.play("hit");
 	health -= 10;
 	if health <= 0:
-		await $AnimatedSprite2D.animation_finished;
 		dying = true;
+		await $AnimatedSprite2D.animation_finished;
 		$AnimatedSprite2D.play("death");
 		await $AnimatedSprite2D.animation_finished;
 		Globals.increment_enemies_killed();

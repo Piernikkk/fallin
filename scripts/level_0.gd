@@ -5,7 +5,7 @@ extends Node2D
 
 func _ready() -> void:
 	Globals.connect("enemy_slain", Callable(self, "_on_enemy_slain"));
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(1.5).timeout
 	spawn_enemy();
 	spawn_enemy();
 	
@@ -32,6 +32,7 @@ func _on_hatch_body_entered(_body: Node) -> void:
 	%hatch.visible = true;
 	%hatch.collision_enabled = true;
 	enemies_to_slain = Globals.map_level * 2;
+	await get_tree().create_timer(1.5).timeout
 	spawn_enemy();
 	spawn_enemy();
 	%Player.heal(30);
