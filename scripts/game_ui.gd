@@ -12,7 +12,7 @@ func _ready() -> void:
 	Globals.connect("level_update", Callable(self, "_on_level_up"));
 	Globals.connect("map_level_changed", Callable(self, "_on_map_level_changed"));
 	
-	pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS;
+	process_mode = Node.PROCESS_MODE_ALWAYS;
 
 func _on_player_health_changed(new_health: int) -> void:
 	hp.text = str(new_health);
