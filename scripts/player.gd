@@ -104,7 +104,7 @@ func take_damage(amount: int) -> void:
 	health_changed.emit(health);
 	if health <= 0:
 		print("Player has died.");
-		queue_free();
+		get_tree().change_scene_to_file("res://scenes/game_over.tscn");
 
 func heal(amount: int) -> void:
 	health += amount;
