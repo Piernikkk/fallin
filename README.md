@@ -42,7 +42,6 @@ don't try to beat it lol.
 
 ### TODO:
 
-- Actually increase power level
 - Add sounds
 - Fix bugs
 - Add more diverse enemies
