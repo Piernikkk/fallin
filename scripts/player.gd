@@ -105,3 +105,7 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		print("Player has died.");
 		queue_free();
+
+func heal(amount: int) -> void:
+	health += amount;
+	health_changed.emit(health);
