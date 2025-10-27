@@ -86,7 +86,7 @@ func _input(event: InputEvent) -> void:
 			if result:
 				print("Hit: ", result.collider)
 				if result.collider.has_method("take_damage"):
-					result.collider.take_damage();
+					result.collider.take_damage(Globals.player_power);
 					break ;
 
 

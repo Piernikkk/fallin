@@ -41,12 +41,12 @@ func _physics_process(delta: float) -> void:
 
 var dying = false
 
-func take_damage() -> void:
+func take_damage(amount: int) -> void:
 	if dying:
 		shoot_timer.set_paused(true);
 		return ;
 	$AnimatedSprite2D.play("hit");
-	health -= 10;
+	health -= amount;
 	if health <= 0:
 		dying = true;
 		await $AnimatedSprite2D.animation_finished;
